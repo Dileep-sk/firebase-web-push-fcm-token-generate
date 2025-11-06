@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Mandrill SMTP Test</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      label {
+        display: block;
+        margin-top: 10px;
+        font-weight: 600;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        margin-top: 6px;
+        box-sizing: border-box;
+      }
+      button {
+        margin-top: 12px;
+        padding: 10px 16px;
+      }
+      .log {
+        white-space: pre-wrap;
+        background: #f4f4f4;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-top: 12px;
+        height: 160px;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Mandrill SMTP quick test (client-side)</h2>
+
+    <p>
+      Replace <code>API_KEY</code> below with your Mandrill API key. For SMTP
+      username use any string (e.g. "Skyline").
+    </p>
+
+    <label
+      >From email (must be a verified sending address on your domain)</label
+    >
+    <input id="from" value="from@yourdomain.com" />
+
+    <label>To email</label>
+    <input id="to" value="to@example.com" />
+
+    <label>Subject</label>
+    <input id="subject" value="Mandrill SMTP test" />
+
+    <label>HTML body</label>
+    <textarea id="body" rows="8">
+<strong>This is a test sent via Mandrill SMTP.</strong></textarea
+    >
+
+    <button id="send">Send test email</button>
+
+    <div class="log" id="log"></div>
+
+    <!-- SMTPJS library (client-side SMTP) -->
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+
+    <script>
+      const logEl = document.getElementById("log");
+
+      function log(...args) {
+        logEl.textContent = args.join(" ") + "\n" + logEl.textContent;
+      }
+
+      document.getElementById("send").addEventListener("click", async () => {
+        const from = document.getElementById("from").value.trim();
+        const to = document.getElementById("to").value.trim();
+        const subject = document.getElementById("subject").value.trim();
+        const body = document.getElementById("body").value;
+
+        if (!from || !to) {
+          log("From and To required.");
+          return;
+        }
+
+        // ======= REPLACE THIS WITH YOUR API KEY =======
+        const API_KEY = "md-vJarxxSx9Nk60i4ne3wjfw";
+        const SMTP_USERNAME = "Skyline";
+        // ==============================================
+
+        log("Attempting send via smtp.mandrillapp.com ...");
+
+        try {
+          Email.send({
+            Host: "smtp.mandrillapp.com",
+            Port: 587,
+            Username: SMTP_USERNAME,
+            Password: API_KEY,
+            To: to,
+            From: from,
+            Subject: subject,
+            Body: body,
+            // If you want HTML set Body and use IsHTML: true
+            IsHTML: true,
+          })
+            .then((message) => {
+              log("Result:", message);
+              if (message === "OK") log("Email sent successfully.");
+              else log("SMTP library response:", message);
+            })
+            .catch((err) => {
+              log("Send error (promise catch):", err);
+            });
+        } catch (e) {
+          log("Send exception:", e);
+        }
+      });
+    </script>
+  </body>
+</html>

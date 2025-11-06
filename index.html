@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>FCM Token Generator</title>
+  </head>
+  <body>
+    <h1>Firebase Cloud Messaging - Token Generator</h1>
+    <button id="getTokenBtn">Generate FCM Token</button>
+    <p><strong>Your Token:</strong></p>
+    <textarea id="tokenBox" cols="80" rows="5" readonly></textarea>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
+
+    <!-- Shared Config + Logic -->
+    <script src="./firebase-config.js"></script>
+    <script src="./firebase.js"></script>
+  </body>
+</html>
